@@ -28,7 +28,7 @@ public class Inventario {
     }
     
     @POST
-    public void postPunteggio(@QueryParam("codice") String codice,
+    public void postProdotto(@QueryParam("codice") String codice,
             @QueryParam("descrizione") Optional<String> descrizione,
             @QueryParam("quant") Optional<Integer> quant) {
         // Imposta la descrizione (passata o default)
@@ -53,7 +53,7 @@ public class Inventario {
      
     @GET
     @Path("/{codice}")
-    public Prodotto getPunteggio(@PathParam("codice") String codice) {
+    public Prodotto getProdotto(@PathParam("codice") String codice) {
         int i = indiceProdotto(codice);
         if (i != -1)
             return prodotti.get(i);
@@ -62,23 +62,21 @@ public class Inventario {
     
     @PUT
     @Path("/{codice}")
-    public void putPunteggio(@PathParam("codice") String codice,
+    public void putProdotto(@PathParam("codice") String codice,
             @QueryParam("descrizione") Optional<String> descrizione,
-            @QueryParam("quant") Optional<Integer> quant) {
+            @QueryParam("quant") int quant) {
         int i = indiceProdotto(codice);
         if (i != -1) {
             String d = prodotti.get(i).getDescrizione();
             if(descrizione.isPresent()) d = descrizione.get();
-            int q = prodotti.get(i).getQuant();
-            if(quant.isPresent()) q = quant.get();
             prodotti.remove(i);
-            prodotti.add(new Prodotto(codice,d,q));
+            prodotti.add(new Prodotto(codice,d,quant));
         }
     }
     
     @DELETE
     @Path("/{codice}")
-    public void deletePunteggio(@PathParam("codice") String codice) {
+    public void deleteProdotto(@PathParam("codice") String codice) {
         int i = indiceProdotto(codice);
         if (i != -1)
             prodotti.remove(i);
